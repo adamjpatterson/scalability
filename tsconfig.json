@@ -4,6 +4,7 @@
   "_version": "18.1.0",
   "compilerOptions": {
     "lib": ["es2022"],
+    "types": ["node"],
     "module": "Node16",
     "target": "es2022",
     "strict": true,
@@ -15,5 +16,6 @@
     "rootDir": "./src",
     "declaration": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["**/dist", "**/node_modules"]
 }

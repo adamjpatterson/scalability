@@ -1,9 +1,17 @@
 {
   "compilerOptions": {
-    "types": ["@types/node"],
+    "types": ["node"],
     "noEmit": true,
-    "allowJs": true
+    "allowJs": true,
+    "checkJs": true,
+    "module": "node16",
+    "moduleResolution": "node16",
+    "baseUrl": ".",
+    "paths": {
+      "scalability": ["./src/index.ts"]
+    },
+    "strict": true
   },
-  "extends": "./tsconfig.json",
-  "include": ["examples/**/*.ts", "examples/**/*.js", "test/**/*.ts", "test/**/*.js", "eslint.config.mjs"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"],
+  "exclude": ["**/dist/**", "**/node_modules/**"]
 }
