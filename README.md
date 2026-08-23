@@ -4,7 +4,7 @@ Scalability is a type-safe service scaling facility built on _Network-Services_.
 
 ## Introduction
 
-_Scalability_ provides a simple and intuitive API for scaling Node.js modules using Worker threads. You can create a [Service App](https://github.com/far-analytics/network-services#service-app) in your scaled module and call its methods from the main thread using a [Service API](https://github.com/far-analytics/network-services#service-api). Conversely, methods can be called in the main thread from scaled modules in the same way.
+_Scalability_ provides a simple and intuitive API for scaling Node.js modules using Worker threads. You can create a [Service App](https://github.com/adamjpatterson/network-services#service-app) in your scaled module and call its methods from the main thread using a [Service API](https://github.com/adamjpatterson/network-services#service-api). Conversely, methods can be called in the main thread from scaled modules in the same way.
 
 _Scalability_ allows you to easily transform your single threaded application into a multithreaded one.
 
@@ -31,9 +31,9 @@ npm install scalability
 
 ## Concepts
 
-_Scalability_ is an extension of the _Network-Services_ RPC Service facility; hence, the concepts that it introduces are _Network-Services_ concepts e.g., [Services](https://github.com/far-analytics/network-services#service), [Service Apps](https://github.com/far-analytics/network-services#service-app), and [Service APIs](https://github.com/far-analytics/network-services#service-api).
+_Scalability_ is an extension of the _Network-Services_ RPC Service facility; hence, the concepts that it introduces are _Network-Services_ concepts e.g., [Services](https://github.com/adamjpatterson/network-services#service), [Service Apps](https://github.com/adamjpatterson/network-services#service-app), and [Service APIs](https://github.com/adamjpatterson/network-services#service-api).
 
-Please see the [_Network-Services_](https://github.com/far-analytics/network-services#concepts) documentation if you would like to learn more about these concepts.
+Please see the [_Network-Services_](https://github.com/adamjpatterson/network-services#concepts) documentation if you would like to learn more about these concepts.
 
 ## Usage
 
@@ -126,7 +126,7 @@ const service = createService(portStream);
 service.createServiceApp(new Greeter());
 ```
 
-That's all it takes to scale this `Greeter` application. Please see the [Hello, World! example](https://github.com/far-analytics/scalability/tree/main/examples/hello_world) for a complete working implementation.
+That's all it takes to scale this `Greeter` application. Please see the [Hello, World! example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello_world) for a complete working implementation.
 
 ## API
 
@@ -178,6 +178,6 @@ A `PortStream` wraps the `parentPort` of the Worker thread into a `stream.Duplex
 
 ## Support
 
-If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/far-analytics/scalability/issues) or start a [discussion](https://github.com/far-analytics/scalability/discussions). You’re also welcome to reach out directly to one of the authors.
+If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/adamjpatterson/scalability/issues) or start a [discussion](https://github.com/adamjpatterson/scalability/discussions). You’re also welcome to reach out directly to one of the authors.
 
-- [Adam Patterson](https://github.com/adpatter)
+- [Adam Patterson](https://github.com/adamjpatterson)

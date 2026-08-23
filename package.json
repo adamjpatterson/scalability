@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/far-analytics/scalability.git"
+    "url": "git+https://github.com/adamjpatterson/scalability.git"
   },
   "author": "FAR",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/far-analytics/scalability/issues"
+    "url": "https://github.com/adamjpatterson/scalability/issues"
   },
-  "homepage": "https://github.com/far-analytics/scalability#readme",
+  "homepage": "https://github.com/adamjpatterson/scalability#readme",
   "engines": {
     "npm": ">=10.8.2",
     "node": ">=18.20.8"
