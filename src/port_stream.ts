@@ -5,13 +5,17 @@ import { CallMessage, ResultMessage } from "network-services";
 const $data = Symbol("data");
 
 export class PortStream extends stream.Duplex {
-  public port?: threads.MessagePort;
-  public messageQueue: (CallMessage | ResultMessage)[] = [];
+  public port?: threads.MessagePort | threads.Worker;
+  public messageQueue: (CallMessage | ResultMessage)[];
 
-  constructor(options?: stream.DuplexOptions) {
+  constructor(
+    port?: threads.MessagePort | threads.Worker,
+    options?: stream.DuplexOptions
+  ) {
     super({ ...options, ...{ objectMode: true } });
-    if (threads.parentPort) {
-      this.port = threads.parentPort;
+    this.messageQueue = [];
+    this.port = port ?? threads.parentPort ?? undefined;
+    if (this.port) {
       this.port.on("message", (message: CallMessage | ResultMessage) => {
         this.messageQueue.push(message);
         this.emit($data);
@@ -19,7 +23,11 @@ export class PortStream extends stream.Duplex {
     }
   }
 
-  _write(chunk: CallMessage | ResultMessage, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
+  public _write(
+    chunk: CallMessage | ResultMessage,
+    encoding: BufferEncoding,
+    callback: (error?: Error | null) => void
+  ): void {
     (async () => {
       await new Promise<null>((r, e) => {
         this.port?.once("messageerror", e);
@@ -34,27 +42,31 @@ export class PortStream extends stream.Duplex {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _read(size: number): void {
-    if (this.messageQueue.length) {
-      while (this.messageQueue.length) {
-        const message = this.messageQueue.shift();
-        if (!this.push(message)) {
-          break;
-        }
-      }
-    } else {
-      this.once($data, () => {
+  public _read(size: number): void {
+    try {
+      if (this.messageQueue.length) {
         while (this.messageQueue.length) {
           const message = this.messageQueue.shift();
           if (!this.push(message)) {
             break;
           }
         }
-      });
+      } else {
+        this.once($data, () => {
+          while (this.messageQueue.length) {
+            const message = this.messageQueue.shift();
+            if (!this.push(message)) {
+              break;
+            }
+          }
+        });
+      }
+    } catch (err) {
+      this.destroy(err instanceof Error ? err : undefined);
     }
   }
 }
 
 export function createPortStream(options?: stream.DuplexOptions): PortStream {
-  return new PortStream(options);
+  return new PortStream(threads.parentPort ?? undefined, options);
 }

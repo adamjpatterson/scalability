@@ -134,6 +134,16 @@ export class WorkerPool extends stream.Duplex {
       });
     }
   }
+
+  _destroy(error: Error | null, callback: (error?: Error | null) => void): void {
+    Promise.all(this[$workers].map((worker) => worker.terminate()))
+      .then(() => {
+        callback(error);
+      })
+      .catch((err: unknown) => {
+        callback(err instanceof Error ? err : undefined);
+      });
+  }
 }
 
 export function createWorkerPool(options: WorkerPoolOptions): WorkerPool {
