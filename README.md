@@ -176,6 +176,8 @@ A `WorkerPool` wraps the `MessagePorts` of the Worker threads into a single `str
 
 A `PortStream` wraps the `parentPort` of the Worker thread into a `stream.Duplex`. Hence, a `PortStream` _is a_ `stream.Duplex`, so it can be passed to the _Network-Services_ `createService` helper function. This is the stream adapter that is used in the Worker module.
 
+The `PortStream` class can also be constructed with an explicit `worker_threads.MessagePort` or `worker_threads.Worker` and optional stream options. The `createPortStream` helper is the convenience API for wrapping the current worker's `parentPort`.
+
 ## Support
 
 If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/adamjpatterson/scalability/issues) or start a [discussion](https://github.com/adamjpatterson/scalability/discussions). You’re also welcome to reach out directly to one of the authors.
