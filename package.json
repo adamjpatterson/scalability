@@ -57,7 +57,7 @@
     "typescript-eslint": "^8.67.0"
   },
   "dependencies": {
-    "network-services": "^2.0.0"
+    "network-services": "^3.0.0"
   },
   "keywords": [
     "api",
