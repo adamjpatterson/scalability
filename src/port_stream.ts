@@ -5,8 +5,8 @@ import { CallMessage, ResultMessage } from "network-services";
 const $data = Symbol("data");
 
 export class PortStream extends stream.Duplex {
-  public port?: threads.MessagePort | threads.Worker;
-  public messageQueue: (CallMessage | ResultMessage)[];
+  public readonly port?: threads.MessagePort | threads.Worker;
+  private messageQueue: (CallMessage | ResultMessage)[];
 
   constructor(
     port?: threads.MessagePort | threads.Worker,
@@ -20,6 +20,9 @@ export class PortStream extends stream.Duplex {
         this.messageQueue.push(message);
         this.emit($data);
       });
+      this.port.on("messageerror", (error) => {
+        this.destroy(error);
+      });
     }
   }
 
@@ -28,17 +31,13 @@ export class PortStream extends stream.Duplex {
     encoding: BufferEncoding,
     callback: (error?: Error | null) => void
   ): void {
-    (async () => {
-      await new Promise<null>((r, e) => {
-        this.port?.once("messageerror", e);
-        this.port?.postMessage(chunk);
-        this.port?.removeListener("messageerror", e);
-        r(null);
-      });
+    try {
+      if (!this.port) throw new Error("No message port is available.");
+      this.port.postMessage(chunk);
       callback();
-    })().catch((err: unknown) => {
+    } catch (err: unknown) {
       callback(err instanceof Error ? err : undefined);
-    });
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -64,6 +63,11 @@ export class PortStream extends stream.Duplex {
     } catch (err) {
       this.destroy(err instanceof Error ? err : undefined);
     }
+  }
+
+  public _destroy(error: Error | null, callback: (error?: Error | null) => void): void {
+    if (this.port && "close" in this.port) this.port.close();
+    callback(error);
   }
 }
 
