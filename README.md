@@ -60,7 +60,7 @@ const workerPool = createWorkerPool({
 });
 ```
 
-#### Wait for the Workers to come online.
+#### Wait for all Workers to initialize.
 
 ```ts
 await once(workerPool, "ready");
@@ -158,13 +158,15 @@ Returns: `<Async<T>>` A `Proxy` of type `<T>` that consists of asynchronous anal
 #### scalability.createWorkerPool(options)
 
 - `options` `<WorkerPoolOptions>`
-  - `workerCount` `<number>` Optional argument that specifies the number of worker threads to be spawned.
+  - `workerCount` `<number>` The positive integer number of worker threads to be spawned.
   - `workerURL` `<string | URL>` The URL or path to the `.js` module file. This is the module that will be scaled according to the value specified for `workerCount`.
-  - `restartWorkerOnError` `<boolean>` A boolean setting specifying if Workers should be restarted on `error`. **Default**: `false`
-  - `workerOptions` `<worker_threads.WorkerOptions>` Optional `worker_threads.WorkerOptions` to be passed to each Worker instance.
+  - `restartWorkerOnError` `<boolean>` A boolean setting specifying if Workers should be restarted after an `error`, `messageerror`, or unexpected `exit`. **Default**: `false`
+  - `workerOptions` `<worker_threads.WorkerOptions>` Optional `worker_threads.WorkerOptions` to be passed to each Worker instance. The pool uses an internal bootstrap worker to detect successful module initialization, so `eval` and internal bootstrap environment variables are managed by the pool.
   - `duplexOptions` `<stream.DuplexOptions>` Optional `stream.DuplexOptions` to be passed to the `stream.Duplex` i.e., the parent class of the `WorkerPool`.
 
 Returns: `<WorkerPool>`
+
+The `ready` event is emitted after all worker modules have initialized. If a worker fails, the pool emits an `error` event and closes unless `restartWorkerOnError` is enabled. With restarting enabled, calls in progress on the failed worker reject and the worker is replaced; calls are not automatically retried. Writes fail with `WorkerPoolError` when no worker is available.
 
 A `WorkerPool` wraps the `MessagePorts` of the Worker threads into a single `stream.Duplex`. Hence, a `WorkerPool` _is a_ `stream.Duplex`, so it can be passed to the _Network-Services_ `createService` helper function. This is the stream adapter that is used in the module of the main thread.
 
@@ -177,6 +179,8 @@ A `WorkerPool` wraps the `MessagePorts` of the Worker threads into a single `str
 A `PortStream` wraps the `parentPort` of the Worker thread into a `stream.Duplex`. Hence, a `PortStream` _is a_ `stream.Duplex`, so it can be passed to the _Network-Services_ `createService` helper function. This is the stream adapter that is used in the Worker module.
 
 The `PortStream` class can also be constructed with an explicit `worker_threads.MessagePort` or `worker_threads.Worker` and optional stream options. The `createPortStream` helper is the convenience API for wrapping the current worker's `parentPort`.
+
+If the underlying port reports a `messageerror`, the `PortStream` emits the error and is destroyed. Writes fail when no port is available.
 
 ## Support
 
