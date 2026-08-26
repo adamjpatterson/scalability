@@ -21,6 +21,7 @@ _Scalability_ allows you to easily transform your single threaded application in
 - [Concepts](#concepts)
 - [Usage](#usage)
 - [API](#api)
+- [Tests](#tests)
 - [Support](#support)
 
 ## Installation
@@ -181,6 +182,45 @@ A `PortStream` wraps the `parentPort` of the Worker thread into a `stream.Duplex
 The `PortStream` class can also be constructed with an explicit `worker_threads.MessagePort` or `worker_threads.Worker` and optional stream options. The `createPortStream` helper is the convenience API for wrapping the current worker's `parentPort`.
 
 If the underlying port reports a `messageerror`, the `PortStream` emits the error and is destroyed. Writes fail when no port is available.
+
+## Tests
+
+### How to run the test suite
+
+#### Clone the repository.
+
+```bash
+git clone https://github.com/adamjpatterson/scalability
+```
+
+#### Change directory into the root of the repository.
+
+```bash
+cd scalability
+```
+
+#### Install Scalability dependencies.
+
+```bash
+npm install
+```
+
+#### Run the tests.
+
+This command performs a clean build of the library, builds the test workspace, and runs the tests with Node.js’s built-in test runner.
+
+```bash
+npm test
+```
+
+#### Build and lint.
+
+To run the other standard checks independently:
+
+```bash
+npm run build
+npm run lint:all
+```
 
 ## Support
 
