@@ -1,4 +1,4 @@
-export class App {
+export class MainThreadService {
   public n = 1;
 
   getNumber(): number {

@@ -1,7 +1,7 @@
 import { createPortStream, createService } from "scalability";
-import { MainThreadApp } from "./index.js";
+import { MainThreadService } from "./main.js";
 
-export class Greeter {
+export class GreeterService {
   // Create a friendly Greeter Application.
   greet(kind: string) {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
@@ -12,8 +12,8 @@ export class Greeter {
 const portStream = createPortStream();
 
 const service = createService(portStream);
-service.createServiceApp(new Greeter());
+service.createServiceApp(new GreeterService());
 
-const app = service.createServiceAPI<MainThreadApp>();
+const app = service.createServiceAPI<MainThreadService>();
 
 console.log(await app.getNumber());

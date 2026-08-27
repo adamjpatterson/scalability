@@ -2,7 +2,7 @@
   "name": "bi-directional-communication",
   "version": "1.0.0",
   "description": "Example - Bi-directional communication",
-  "main": "./dist/index.js",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "tsc --build .",
     "clean": "rm -rf ./dist/*",
@@ -15,7 +15,7 @@
   "author": "FAR",
   "license": "MIT",
   "dependencies": {
-    "scalability": "^0.4.0"
+    "scalability": "^1.0.0"
   },
   "type": "module",
   "devDependencies": {

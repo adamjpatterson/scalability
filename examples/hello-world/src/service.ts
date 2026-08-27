@@ -1,6 +1,6 @@
 import { createPortStream, createService } from "scalability";
 
-export class Greeter {
+export class GreeterService {
   // Create a friendly Greeter Application.
   greet(kind: string) {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
@@ -11,4 +11,4 @@ export class Greeter {
 const portStream = createPortStream();
 
 const service = createService(portStream);
-service.createServiceApp(new Greeter());
+service.createServiceApp(new GreeterService());

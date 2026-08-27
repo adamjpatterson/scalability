@@ -38,18 +38,18 @@ Please see the [_Network-Services_](https://github.com/adamjpatterson/network-se
 
 ## Usage
 
-A _Scalability_ application consists of a main thread (e.g., `index.js`) and a scaled module (e.g., `service.js`). In this example the module that runs in the main thread is named `index.js` and the module that will be scaled is named `service.js`.
+A _Scalability_ application consists of a main thread (e.g., `main.js`) and a scaled module (e.g., `service.js`). In this example the module that runs in the main thread is named `main.js` and the module that will be scaled is named `service.js`.
 
-### Implement the `index.ts` module
+### Implement the `main.ts` module
 
 This is the module that runs in the main thread.
 
-#### Import the `createService` and `createWorkerPool` helper functions and the **_type_** of the service application (i.e., `Greeter`) that will run in the Worker thread.
+#### Import the `createService` and `createWorkerPool` helper functions and the **_type_** of the service application (i.e., `GreeterService`) that will run in the Worker thread.
 
 ```ts
 import { once } from "node:events";
 import { createService, createWorkerPool } from "scalability";
-import { Greeter } from "./service.js";
+import { GreeterService } from "./service.js";
 ```
 
 #### Create a pool of Workers consisting of 10 instances of the `service.js` module.
@@ -67,16 +67,16 @@ const workerPool = createWorkerPool({
 await once(workerPool, "ready");
 ```
 
-#### Create a Service using the `WorkerPool` stream and a Service API of type `Greeter`.
+#### Create a Service using the `WorkerPool` stream and a Service API of type `GreeterService`.
 
 The `greeter` object will support _code completion_, _parameter types_, and _return types_.
 
 ```ts
 const service = createService(workerPool);
-const greeter = service.createServiceAPI<Greeter>();
+const greeter = service.createServiceAPI<GreeterService>();
 ```
 
-#### Call the `greet` method on the `Greeter` 100 times and log the results.
+#### Call the `greet` method on the `GreeterService` 100 times and log the results.
 
 The `greeter.greet` method returns a promise because it is called asynchronously using a `MessagePort`.
 
@@ -92,7 +92,7 @@ console.log(result);
 
 ### Implement the `service.ts` module
 
-This is the scaled module specified in the options of the `WorkerPool` constructor. It contains the `Greeter` Service App.
+This is the scaled module specified in the options of the `WorkerPool` constructor. It contains the `GreeterService` Service App.
 
 #### Import the `createPortStream` and `createService` helper functions.
 
@@ -100,10 +100,10 @@ This is the scaled module specified in the options of the `WorkerPool` construct
 import { createPortStream, createService } from "scalability";
 ```
 
-#### Implement a `Greeter` service.
+#### Implement a `GreeterService` service.
 
 ```ts
-export class Greeter {
+export class GreeterService {
   // Create a friendly Greeter Application.
   greet(kind: string) {
     for (let now = Date.now(), then = now + 100; now < then; now = Date.now()); // Block for 100 milliseconds.
@@ -120,14 +120,14 @@ This adapter will wrap the Worker thread's `parentPort` in a `stream.Duplex` in 
 const portStream = createPortStream();
 ```
 
-#### Create a Service using the portStream instance and create a Service App using an instance of `Greeter`.
+#### Create a Service using the portStream instance and create a Service App using an instance of `GreeterService`.
 
 ```ts
 const service = createService(portStream);
-service.createServiceApp(new Greeter());
+service.createServiceApp(new GreeterService());
 ```
 
-That's all it takes to scale this `Greeter` application. Please see the [Hello, World! example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello_world) for a complete working implementation.
+That's all it takes to scale this `GreeterService` application. Please see the [Hello, World! example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello-world) for a complete working implementation.
 
 ## API
 

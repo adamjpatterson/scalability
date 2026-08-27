@@ -2,8 +2,8 @@ import { after, suite, test } from "node:test";
 import * as assert from "node:assert";
 import { once } from "node:events";
 import { createService, createWorkerPool } from "scalability";
-import type { Greeter } from "./greeter.js";
-import { App } from "./app.js";
+import type { GreeterService } from "./greeter_service.js";
+import { MainThreadService } from "./main_thread_service.js";
 
 interface CrashingService {
   crash(): void;
@@ -28,7 +28,7 @@ const wait = async (milliseconds: number): Promise<void> => {
 };
 
 await suite("WorkerPool", async () => {
-  const workerPool = createWorkerPool({ workerCount: 4, workerURL: "./dist/service.js" });
+  const workerPool = createWorkerPool({ workerCount: 4, workerURL: "./dist/worker_service.js" });
   await once(workerPool, "ready");
 
   after(async () => {
@@ -37,8 +37,8 @@ await suite("WorkerPool", async () => {
   });
 
   const service = createService(workerPool);
-  service.createServiceApp<App>(new App());
-  const greeter = service.createServiceAPI<Greeter>();
+  service.createServiceApp<MainThreadService>(new MainThreadService());
+  const greeter = service.createServiceAPI<GreeterService>();
 
   void test("Call methods concurrently through the worker pool.", async () => {
     const results = await Promise.all(Array.from({ length: 10 }, () => greeter.greet("happy")));
@@ -50,7 +50,7 @@ await suite("WorkerPool", async () => {
   });
 
   void test("Reject invalid worker counts.", () => {
-    assert.throws(() => createWorkerPool({ workerCount: 0, workerURL: "./dist/service.js" }), RangeError);
+    assert.throws(() => createWorkerPool({ workerCount: 0, workerURL: "./dist/worker_service.js" }), RangeError);
   });
 
   void test("Replace workers that exit and reject their calls.", async () => {
@@ -123,7 +123,7 @@ await suite("WorkerPool", async () => {
   });
 
   void test("Allow repeated pool destruction.", async () => {
-    const pool = createWorkerPool({ workerCount: 1, workerURL: "./dist/service.js" });
+    const pool = createWorkerPool({ workerCount: 1, workerURL: "./dist/worker_service.js" });
     await once(pool, "ready");
     const close = once(pool, "close");
     pool.destroy();

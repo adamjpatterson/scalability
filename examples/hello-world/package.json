@@ -1,8 +1,8 @@
 {
-  "name": "hello_world",
+  "name": "hello-world",
   "version": "1.0.0",
   "description": "Example - Hello, World!",
-  "main": "./dist/index.js",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "tsc --build .",
     "clean": "rm -rf ./dist/*",
