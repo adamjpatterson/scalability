@@ -1,6 +1,6 @@
 {
   "name": "scalability",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scalability is a type-safe service scaling facility built on Network-Services.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
