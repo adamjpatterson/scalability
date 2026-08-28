@@ -20,6 +20,7 @@ _Scalability_ allows you to easily transform your single threaded application in
 - [Installation](#installation)
 - [Concepts](#concepts)
 - [Usage](#usage)
+- [Examples](#examples)
 - [API](#api)
 - [Tests](#tests)
 - [Support](#support)
@@ -44,7 +45,7 @@ A _Scalability_ application consists of a main thread (e.g., `main.js`) and a sc
 
 This is the module that runs in the main thread.
 
-#### Import the `createService` and `createWorkerPool` helper functions and the **_type_** of the service application (i.e., `GreeterService`) that will run in the Worker thread.
+Import the `createService` and `createWorkerPool` helper functions and the **_type_** of the service application (i.e., `GreeterService`) that will run in the Worker thread.
 
 ```ts
 import { once } from "node:events";
@@ -52,7 +53,7 @@ import { createService, createWorkerPool } from "scalability";
 import { GreeterService } from "./service.js";
 ```
 
-#### Create a pool of Workers consisting of 10 instances of the `service.js` module.
+Create a pool of Workers consisting of 10 instances of the `service.js` module.
 
 ```ts
 const workerPool = createWorkerPool({
@@ -61,24 +62,20 @@ const workerPool = createWorkerPool({
 });
 ```
 
-#### Wait for all Workers to initialize.
+Wait for all Workers to initialize.
 
 ```ts
 await once(workerPool, "ready");
 ```
 
-#### Create a Service using the `WorkerPool` stream and a Service API of type `GreeterService`.
-
-The `greeter` object will support _code completion_, _parameter types_, and _return types_.
+Create a Service using the `WorkerPool` stream and a Service API of type `GreeterService`. The `greeter` object will support _code completion_, _parameter types_, and _return types_.
 
 ```ts
 const service = createService(workerPool);
 const greeter = service.createServiceAPI<GreeterService>();
 ```
 
-#### Call the `greet` method on the `GreeterService` 100 times and log the results.
-
-The `greeter.greet` method returns a promise because it is called asynchronously using a `MessagePort`.
+Call the `greet` method on the `GreeterService` 100 times and log the results. The `greeter.greet` method returns a promise because it is called asynchronously using a `MessagePort`.
 
 ```ts
 const results = [];
@@ -94,13 +91,13 @@ console.log(result);
 
 This is the scaled module specified in the options of the `WorkerPool` constructor. It contains the `GreeterService` Service App.
 
-#### Import the `createPortStream` and `createService` helper functions.
+Import the `createPortStream` and `createService` helper functions.
 
 ```ts
 import { createPortStream, createService } from "scalability";
 ```
 
-#### Implement a `GreeterService` service.
+Implement `GreeterService`.
 
 ```ts
 export class GreeterService {
@@ -112,22 +109,30 @@ export class GreeterService {
 }
 ```
 
-#### Create a `PortStream` adapter instance using the `createPortStream` helper function.
-
-This adapter will wrap the Worker thread's `parentPort` in a `stream.Duplex` in order for it be used by _Network-Services_.
+Create a `PortStream` adapter instance using the `createPortStream` helper function. This adapter will wrap the Worker thread's `parentPort` in a `stream.Duplex` in order for it to be used by _Network-Services_.
 
 ```ts
 const portStream = createPortStream();
 ```
 
-#### Create a Service using the portStream instance and create a Service App using an instance of `GreeterService`.
+Create a Service using the portStream instance and create a Service App using an instance of `GreeterService`.
 
 ```ts
 const service = createService(portStream);
 service.createServiceApp(new GreeterService());
 ```
 
-That's all it takes to scale this `GreeterService` application. Please see the [Hello, World! example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello-world) for a complete working implementation.
+That's all it takes to scale this `GreeterService` application. Please see the "Hello, World!" [example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello-world) for a complete working implementation.
+
+## Examples
+
+### _"Hello, World!"_ <sup><sup>\<TypeScript\></sup></sup>
+
+Please see the "Hello, World!" [example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello-world) for a working implementation.
+
+### _"Bi-directional Communication"_ <sup><sup>\<Node.js\></sup></sup>
+
+Please see the "Bi-directional Communication" [example](https://github.com/adamjpatterson/scalability/tree/main/examples/bi-directional-communication) for a working implementation.
 
 ## API
 
