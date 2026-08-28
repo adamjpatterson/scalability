@@ -126,11 +126,11 @@ That's all it takes to scale this `GreeterService` application. Please see the "
 
 ## Examples
 
-### _"Hello, World!"_ <sup><sup>\<TypeScript\></sup></sup>
+### _"Hello, World!"_
 
 Please see the "Hello, World!" [example](https://github.com/adamjpatterson/scalability/tree/main/examples/hello-world) for a working implementation.
 
-### _"Bi-directional Communication"_ <sup><sup>\<Node.js\></sup></sup>
+### _"Bi-directional Communication"_
 
 Please see the "Bi-directional Communication" [example](https://github.com/adamjpatterson/scalability/tree/main/examples/bi-directional-communication) for a working implementation.
 
