@@ -1,5 +1,5 @@
 import { createPortStream, createService } from "scalability";
-import { MainThreadService } from "./main.js";
+import type { MainThreadService } from "./main.js";
 
 export class GreeterService {
   // Create a friendly Greeter Application.

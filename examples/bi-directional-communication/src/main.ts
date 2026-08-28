@@ -1,6 +1,6 @@
 import { once } from "node:events";
 import { createService, createWorkerPool } from "scalability";
-import { GreeterService } from "./service.js";
+import type { GreeterService } from "./service.js";
 
 export class MainThreadService {
   public n = 1;
