@@ -10,7 +10,7 @@ In this example you will use Scalability to run a `GreeterService` in a pool of 
 
 This module runs in the main thread.
 
-#### Import `createService`, `createWorkerPool`, and the `GreeterService` type.
+Import `createService`, `createWorkerPool`, and the `GreeterService` type.
 
 ```ts
 import { once } from "node:events";
@@ -18,7 +18,7 @@ import { createService, createWorkerPool } from "scalability";
 import type { GreeterService } from "./service.js";
 ```
 
-#### Create a pool of Worker threads.
+Create a pool of Worker threads.
 
 ```ts
 const workerPool = createWorkerPool({
@@ -31,7 +31,7 @@ await once(workerPool, "ready");
 
 The `ready` event is emitted after all ten Worker modules have initialized.
 
-#### Create a Service API and call `greet` concurrently.
+Create a Service API and call `greet` concurrently.
 
 ```ts
 const service = createService(workerPool);
@@ -68,37 +68,37 @@ service.createServiceApp(new GreeterService());
 
 ### How to run the example
 
-#### Clone the Scalability repository.
+Clone the Scalability repository.
 
 ```bash
 git clone https://github.com/adamjpatterson/scalability.git
 ```
 
-#### Change directory into the example.
+Change directory into the example.
 
 ```bash
 cd scalability/examples/hello-world
 ```
 
-#### Install the example dependencies.
+Install the example dependencies.
 
 ```bash
 npm install
 ```
 
-#### Build the application.
+Build the application.
 
 ```bash
 npm run clean:build
 ```
 
-#### Run the application.
+Run the application.
 
 ```bash
 npm start
 ```
 
-##### Output
+**Output**
 
 ```text
 [

@@ -12,7 +12,7 @@ The main thread calls `GreeterService` in the Worker thread, while the Worker ca
 
 This module runs in the main thread.
 
-#### Import `createService`, `createWorkerPool`, and the `GreeterService` type.
+Import `createService`, `createWorkerPool`, and the `GreeterService` type.
 
 ```ts
 import { once } from "node:events";
@@ -20,7 +20,7 @@ import { createService, createWorkerPool } from "scalability";
 import type { GreeterService } from "./service.js";
 ```
 
-#### Implement and register the main-thread service.
+Implement and register the main-thread service.
 
 ```ts
 export class MainThreadService {
@@ -32,7 +32,7 @@ export class MainThreadService {
 }
 ```
 
-#### Create a pool and register `MainThreadService`.
+Create a pool and register `MainThreadService`.
 
 ```ts
 const workerPool = createWorkerPool({
@@ -47,7 +47,7 @@ const service = createService(workerPool);
 service.createServiceApp<MainThreadService>(app);
 ```
 
-#### Call the Worker service.
+Call the Worker service.
 
 ```ts
 const greeter = service.createServiceAPI<GreeterService>();
@@ -89,37 +89,37 @@ The `app.getNumber()` call travels from the Worker to the main thread and return
 
 ### How to run the example
 
-#### Clone the Scalability repository.
+Clone the Scalability repository.
 
 ```bash
 git clone https://github.com/adamjpatterson/scalability.git
 ```
 
-#### Change directory into the example.
+Change directory into the example.
 
 ```bash
 cd scalability/examples/bi-directional-communication
 ```
 
-#### Install the example dependencies.
+Install the example dependencies.
 
 ```bash
 npm install
 ```
 
-#### Build the application.
+Build the application.
 
 ```bash
 npm run clean:build
 ```
 
-#### Run the application.
+Run the application.
 
 ```bash
 node --expose-gc .
 ```
 
-##### Output
+**Output**
 
 ```text
 1
